@@ -1,0 +1,16 @@
+[package]
+name = "advent_2020"
+version = "0.1.0"
+authors = ["Eric Frees <efrees@atlasrfid.com>"]
+
+[lib]
+name = "adventlib"
+path = "src/adventlib/lib.rs"
+
+[dependencies]
+regex = "1"
+chrono = "*"
+lazy_static = "*"
+slab = "*"
+crossterm = "*"
+num-integer = "*"
