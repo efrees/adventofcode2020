@@ -18,6 +18,7 @@ fn main() {
 fn solve_all() {
     // time(&day01::solve);
     time(&day02::solve);
+    time(&day03::solve);
 }
 
 fn time(f: &dyn Fn()) {
