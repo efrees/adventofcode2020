@@ -3,7 +3,6 @@ extern crate chrono;
 extern crate crossterm;
 extern crate num_integer;
 extern crate regex;
-#[macro_use]
 extern crate lazy_static;
 
 use std::time::Instant;
@@ -19,6 +18,7 @@ fn solve_all() {
     // time(&day01::solve);
     time(&day02::solve);
     time(&day03::solve);
+    time(&day04::solve);
 }
 
 fn time(f: &dyn Fn()) {
