@@ -13,10 +13,10 @@ pub fn solve() {
     println!("Output (part 1): {}", tree_count);
 
     let all_slopes: Vec<(usize, usize)> = vec![(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)];
-    let mut product = 1;
-    for slope in all_slopes {
-        product *= count_on_slope(slope, &input_lines, input_width);
-    }
+    let product: usize = all_slopes
+        .iter()
+        .map(|&slope| count_on_slope(slope, &input_lines, input_width))
+        .product();
 
     println!("Output (part 2): {}", product);
 }
