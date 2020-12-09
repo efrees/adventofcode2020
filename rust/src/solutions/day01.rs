@@ -42,13 +42,12 @@ pub fn solve() {
             continue;
         }
         if sum + parsed_lines[high - 1] < 2020 {
-            // Can't get large enough
             low += 1;
             continue;
         }
 
         let target = 2020 - sum;
-        match parsed_lines.as_slice()[low + 1..high].binary_search(&target) {
+        match parsed_lines[low + 1..high].binary_search(&target) {
             Ok(_) => answer = a * b * target,
             _ => (),
         }
