@@ -9,8 +9,17 @@ This year, like the last two, I'm primarily practicing Rust, which (regrettably)
 eleven months of the year. I expect I may solve some in other languages or be forced, in vintage AoC fashion, to solve
 by hand in a text editor.
 
-## Solutions
+## Progress
 
 |      |1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|
 |------|-|-|-|-|-|-|-|-|-|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
 |**Rust**|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🕚|☆|☆|☆|☆|☆|☆|☆|☆|☆|☆|☆|☆|☆|☆|☆|☆|
+
+## Results
+I've added `output.txt` as a reference for my answers (for convenient checking while refactoring) and runtimes of my solutions.
+
+Rust - [output.txt](rust/output.txt)
+
+## Links
+* [Advent of Code](https://adventofcode.com)
+* [Rust](https://www.rust-lang.org)
