@@ -10,50 +10,41 @@ pub fn solve() {
 
     parsed_lines.sort();
 
-    let mut low = 0;
-    let mut high = parsed_lines.len() - 1;
-    let mut answer = 0;
-
-    while low < high && answer == 0 {
-        let a = parsed_lines[low];
-        let b = parsed_lines[high];
-
-        match a + b {
-            2020 => answer = a * b,
-            sum if sum < 2020 => low += 1,
-            sum if sum > 2020 => high -= 1,
-            _ => (),
-        }
-    }
+    let answer = find_pair_with_sum(parsed_lines.as_slice(), 2020);
 
     println!("Output (part 1): {}", answer);
 
-    let mut low = 0;
-    let mut high = parsed_lines.len() - 1;
     let mut answer = 0;
+    for low in 0..parsed_lines.len() - 2 {
+        let target = 2020 - parsed_lines[low];
 
-    while low < high && answer == 0 {
-        let a = parsed_lines[low];
-        let b = parsed_lines[high];
-        let sum = a + b;
+        let partial_answer = find_pair_with_sum(&parsed_lines[low + 1..], target);
 
-        if sum + parsed_lines[low + 1] > 2020 {
-            high -= 1;
-            continue;
+        if partial_answer > 0 {
+            answer = parsed_lines[low] * partial_answer;
+            break;
         }
-        if sum + parsed_lines[high - 1] < 2020 {
-            low += 1;
-            continue;
-        }
-
-        let target = 2020 - sum;
-        match parsed_lines[low + 1..high].binary_search(&target) {
-            Ok(_) => answer = a * b * target,
-            _ => (),
-        }
-
-        low += 1;
     }
 
     println!("Output (part 2): {}", answer);
+}
+
+fn find_pair_with_sum(sorted_list: &[u32], target: u32) -> u32 {
+    let mut low = 0;
+    let mut high = sorted_list.len() - 1;
+    let mut answer = 0;
+
+    while low < high && answer == 0 {
+        let a = sorted_list[low];
+        let b = sorted_list[high];
+
+        match a + b {
+            sum if sum == target => answer = a * b,
+            sum if sum < target => low += 1,
+            sum if sum > target => high -= 1,
+            _ => (),
+        }
+    }
+
+    return answer;
 }
