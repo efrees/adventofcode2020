@@ -103,6 +103,17 @@ pub enum Direction {
 }
 
 impl Direction {
+    pub fn from_char(compass_direction: char) -> Option<Direction> {
+        match compass_direction {
+            'N' | 'n' => Some(Direction::Up),
+            'S' | 's' => Some(Direction::Down),
+            'E' | 'e' => Some(Direction::Right),
+            'W' | 'w' => Some(Direction::Left),
+            _ => None,
+        }
+    }
+
+    /// Represent the direction as a vector with "Up" being the negative-y direction.
     pub fn as_vector(&self) -> Point {
         match self {
             Direction::Up => Point::new(0, -1),

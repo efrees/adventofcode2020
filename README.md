@@ -13,10 +13,10 @@ by hand in a text editor.
 
 |      |1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|
 |------|-|-|-|-|-|-|-|-|-|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
-|**Rust**|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|⭐|🕚|☆|☆|☆|☆|☆|☆|☆|☆|☆|☆|☆|☆|
+|**Rust**|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🕚|☆|☆|☆|☆|☆|☆|☆|☆|☆|☆|☆|☆|
 
+⭐ - First star completed\
 🌟 - Both stars completed
-⭐ - First star completed
 
 ## Results
 I've added `output.txt` as a reference for my answers (for convenient checking while refactoring) and runtimes of my solutions.
