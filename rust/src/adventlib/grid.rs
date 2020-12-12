@@ -56,6 +56,13 @@ impl Point {
             y: self.y + other.y,
         }
     }
+
+    pub fn vec_scale(&self, scale: i64) -> Point {
+        Point {
+            x: self.x * scale,
+            y: self.y * scale,
+        }
+    }
 }
 
 #[derive(Eq, PartialEq, Ord, PartialOrd, Clone, Copy, Hash, Debug)]
@@ -135,6 +142,14 @@ impl Direction {
         }
     }
 
+    pub fn turn_left_times(&self, times: usize) -> Direction {
+        let mut result = *self;
+        for _ in 0..times {
+            result = result.turn_left();
+        }
+        return result;
+    }
+
     pub fn turn_right(&self) -> Direction {
         match self {
             Direction::Up => Direction::Right,
@@ -142,6 +157,14 @@ impl Direction {
             Direction::Left => Direction::Up,
             Direction::Right => Direction::Down,
         }
+    }
+
+    pub fn turn_right_times(&self, times: usize) -> Direction {
+        let mut result = *self;
+        for _ in 0..times {
+            result = result.turn_right();
+        }
+        return result;
     }
 }
 
