@@ -23,6 +23,8 @@ I've added `output.txt` as a reference for my answers (for convenient checking w
 
 Rust - [output.txt](rust/output.txt)
 
+![Average runtimes](rust/RuntimesChart.png)
+
 ## Links
 * [Advent of Code](https://adventofcode.com)
 * [Rust](https://www.rust-lang.org)
