@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 extern crate adventlib;
 extern crate chrono;
 extern crate crossterm;
@@ -29,6 +30,7 @@ fn solve_all() {
     time(&day12::solve);
     time(&day13::solve);
     time(&day14::solve);
+    time(&day15::solve);
 }
 
 fn time(f: &dyn Fn()) {
