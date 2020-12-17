@@ -2,10 +2,29 @@ use adventlib::grid::Point3d;
 use std::cmp;
 use std::collections::HashMap;
 
+#[derive(Eq, PartialEq, Ord, PartialOrd, Clone, Copy, Hash, Debug)]
+struct Point4d {
+    pub x: i64,
+    pub y: i64,
+    pub z: i64,
+    pub w: i64,
+}
+
+impl Point4d {
+    pub fn new(x: i64, y: i64, z: i64, w: i64) -> Point4d {
+        Point4d {
+            x: x,
+            y: y,
+            z: z,
+            w: w,
+        }
+    }
+}
+
 pub fn solve() {
     println!("Day 17");
 
-    let input_lines = adventlib::read_input_lines("day17input_sample.txt");
+    let input_lines = adventlib::read_input_lines("day17input.txt");
 
     let mut grid: HashMap<Point3d, u8> = HashMap::new();
     let mut next_grid: HashMap<Point3d, u8> = HashMap::new();
@@ -42,12 +61,6 @@ pub fn solve() {
     }
 
     for _cycle in 0..6 {
-        println!(
-            "checking {} {} {:?}",
-            min_z,
-            max_z,
-            (min_z - 1..=max_z + 1).collect::<Vec<_>>()
-        );
         for i in min_x - 1..=max_x + 1 {
             for j in min_y - 1..=max_y + 1 {
                 for k in min_z - 1..=max_z + 1 {
@@ -97,7 +110,102 @@ pub fn solve() {
     let active_count: u32 = grid.values().map(|v| *v as u32).sum();
     println!("Output (part 1): {}", active_count);
 
-    println!("Output (part 2): {}", -1);
+    let mut grid: HashMap<Point4d, u8> = HashMap::new();
+    let mut next_grid: HashMap<Point4d, u8> = HashMap::new();
+
+    let mut min_x = std::i64::MAX;
+    let mut min_y = std::i64::MAX;
+    let mut min_z = std::i64::MAX;
+    let mut min_w = std::i64::MAX;
+    let mut max_x = std::i64::MIN;
+    let mut max_y = std::i64::MIN;
+    let mut max_z = std::i64::MIN;
+    let mut max_w = std::i64::MIN;
+
+    // Init
+    for j in 0..input_lines.len() {
+        let mut i = 0;
+        for c in input_lines[j].chars() {
+            let point = Point4d::new(i, j as i64, 0, 0);
+
+            min_x = cmp::min(min_x, point.x);
+            min_y = cmp::min(min_y, point.y);
+            min_z = cmp::min(min_z, point.z);
+            min_w = cmp::min(min_w, point.w);
+            max_x = cmp::max(max_x, point.x);
+            max_y = cmp::max(max_y, point.y);
+            max_z = cmp::max(max_z, point.z);
+            max_w = cmp::max(max_w, point.w);
+
+            grid.insert(
+                point,
+                match c {
+                    '#' => 1,
+                    _ => 0,
+                },
+            );
+            i += 1;
+        }
+    }
+
+    for _cycle in 0..6 {
+        for i in min_x - 1..=max_x + 1 {
+            for j in min_y - 1..=max_y + 1 {
+                for k in min_z - 1..=max_z + 1 {
+                    for l in min_w - 1..=max_w + 1 {
+                        let point = Point4d::new(i, j, k, l);
+
+                        let mut count = 0;
+                        for n_i in -1..=1 {
+                            for n_j in -1..=1 {
+                                for n_k in -1..=1 {
+                                    for n_l in -1..=1 {
+                                        if n_i == 0 && n_j == 0 && n_k == 0 && n_l == 0 {
+                                            continue;
+                                        }
+                                        let neighbor = Point4d::new(
+                                            point.x + n_i,
+                                            point.y + n_j,
+                                            point.z + n_k,
+                                            point.w + n_l,
+                                        );
+                                        if grid.get(&neighbor) == Some(&1) {
+                                            count += 1;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        let is_active = grid.get(&point) == Some(&1);
+                        let next_is_active = (is_active && count == 2) || count == 3;
+
+                        if next_is_active {
+                            next_grid.insert(point, 1);
+
+                            min_x = cmp::min(min_x, point.x);
+                            min_y = cmp::min(min_y, point.y);
+                            min_z = cmp::min(min_z, point.z);
+                            min_w = cmp::min(min_w, point.w);
+                            max_x = cmp::max(max_x, point.x);
+                            max_y = cmp::max(max_y, point.y);
+                            max_z = cmp::max(max_z, point.z);
+                            max_w = cmp::max(max_w, point.w);
+                        } else {
+                            next_grid.insert(point, 0);
+                        }
+                    }
+                }
+            }
+        }
+
+        let temp = grid;
+        grid = next_grid;
+        next_grid = temp;
+    }
+
+    let active_count: u32 = grid.values().map(|v| *v as u32).sum();
+    println!("Output (part 2): {}", active_count);
 }
 
 fn render_to_string(
