@@ -22,53 +22,45 @@ fn main() {
     solve_with_average_times(5)
 }
 
+fn get_solve_functions() -> Vec<fn()> {
+    vec![
+        day01::solve,
+        day02::solve,
+        day03::solve,
+        day04::solve,
+        day05::solve,
+        day06::solve,
+        day07::solve,
+        day08::solve,
+        day09::solve,
+        day10::solve,
+        day11::solve,
+        day12::solve,
+        day13::solve,
+        day14::solve,
+        day15::solve,
+        day16::solve,
+        day17::solve,
+        day18::solve,
+        day19::solve,
+    ]
+}
+
 fn solve_all() {
-    time(&day01::solve);
-    time(&day02::solve);
-    time(&day03::solve);
-    time(&day04::solve);
-    time(&day05::solve);
-    time(&day06::solve);
-    time(&day07::solve);
-    time(&day08::solve);
-    time(&day09::solve);
-    time(&day10::solve);
-    time(&day11::solve);
-    time(&day12::solve);
-    time(&day13::solve);
-    time(&day14::solve);
-    time(&day15::solve);
-    time(&day16::solve);
-    time(&day17::solve);
-    time(&day18::solve);
-    time(&day19::solve);
+    for solver in &get_solve_functions() {
+        time(solver);
+    }
 }
 
 fn solve_with_average_times(repetitions: u8) {
-    let average_times = [
-        (1, average_time(&day01::solve, repetitions)),
-        (2, average_time(&day02::solve, repetitions)),
-        (3, average_time(&day03::solve, repetitions)),
-        (4, average_time(&day04::solve, repetitions)),
-        (5, average_time(&day05::solve, repetitions)),
-        (6, average_time(&day06::solve, repetitions)),
-        (7, average_time(&day07::solve, repetitions)),
-        (8, average_time(&day08::solve, repetitions)),
-        (9, average_time(&day09::solve, repetitions)),
-        (10, average_time(&day10::solve, repetitions)),
-        (11, average_time(&day11::solve, repetitions)),
-        (12, average_time(&day12::solve, repetitions)),
-        (13, average_time(&day13::solve, repetitions)),
-        (14, average_time(&day14::solve, repetitions)),
-        (15, average_time(&day15::solve, repetitions)),
-        (16, average_time(&day16::solve, repetitions)),
-        (17, average_time(&day17::solve, repetitions)),
-        (18, average_time(&day18::solve, repetitions)),
-        (19, average_time(&day19::solve, repetitions)),
-    ];
+    let results: Vec<_> = get_solve_functions()
+        .iter()
+        .enumerate()
+        .map(|(i, solver)| (i + 1, average_time(solver, repetitions)))
+        .collect();
 
     println!("Day\tAverage Runtime in Seconds ({} attempts)", repetitions);
-    for (day, average) in &average_times {
+    for (day, average) in &results {
         println!("{}\t{:.9}", day, average);
     }
 }
@@ -87,12 +79,7 @@ fn time(f: &dyn Fn()) {
 
 fn time_with_label(f: &dyn Fn(), label: &str) {
     let duration = get_duration(f);
-    println!(
-        "{} {}.{:09}s\n",
-        label,
-        duration.as_secs(),
-        duration.subsec_nanos()
-    );
+    println!("{} {:.9}s\n", label, duration.as_secs_f64());
 }
 
 fn get_duration(f: &dyn Fn()) -> Duration {
