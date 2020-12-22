@@ -25,6 +25,11 @@ Rust - [output.txt](rust/output.txt)
 
 ![Average runtimes](rust/RuntimesChart.png)
 
+## Environment
+* VS Code
+  * [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=matklad.rust-analyzer)
+  * [CodeLLDB](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb)
+
 ## Links
 * [Advent of Code](https://adventofcode.com)
 * [Rust](https://www.rust-lang.org)
