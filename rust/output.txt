@@ -1,97 +1,112 @@
 Day 1
 Output (part 1): 866436
 Output (part 2): 276650720
-Solved in 0.000298100s
+Solved in 0.000344200s
 
 Day 2
 Output (part 1): 586
 Output (part 2): 352
-Solved in 0.004405100s
+Solved in 0.005737600s
 
 Day 3
 Output (part 1): 272
 Output (part 2): 3898725600
-Solved in 0.000412900s
+Solved in 0.001873400s
 
 Day 4
 Output (part 1): 260
 Output (part 2): 153
-Solved in 0.078756700s
+Solved in 0.127282500s
 
 Day 5
 Output (part 1): 963
 Output (part 2): 592
-Solved in 0.000625600s
+Solved in 0.001204800s
 
 Day 6
 Output (part 1): 6763
 Output (part 2): 3512
-Solved in 0.003502700s
+Solved in 0.006630400s
 
 Day 7
 Output (part 1): 101
 Output (part 2): 108636
-Solved in 0.005906000s
+Solved in 0.019467500s
 
 Day 8
 Output (part 1): 1317
 Output (part 2): 1033
-Solved in 0.006419800s
+Solved in 0.011382800s
 
 Day 9
 Output (part 1): 373803594
 Output (part 2): 51152360
-Solved in 0.000427600s
+Solved in 0.000772000s
 
 Day 10
 Output (part 1): 2482
 Output (part 2): 96717311574016
-Solved in 0.000144700s
+Solved in 0.000220800s
 
 Day 11
 Output (part 1): 2249
 Output (part 2): 2023
-Solved in 0.191622200s
+Solved in 0.241472400s
 
 Day 12
 Output (part 1): 879
 Output (part 2): 18107
-Solved in 0.000339500s
+Solved in 0.000463700s
 
 Day 13
 Output (part 1): 205
 Output (part 2): 803025030761664
-Solved in 0.000125800s
+Solved in 0.000147400s
 
 Day 14
 Output (part 1): 2346881602152
 Output (part 2): 3885232834169
-Solved in 0.138926200s
+Solved in 0.227077100s
 
 Day 15
 Output (part 1): 1085
 Output (part 2): 10652
-Solved in 2.286194800s
+Solved in 3.478576000s
 
 Day 16
 Output (part 1): 21956
 Output (part 2): 3709435214239
-Solved in 0.001869000s
+Solved in 0.003066100s
 
 Day 17
 Output (part 1): 298
 Output (part 2): 1792
-Solved in 0.571445200s
+Solved in 0.812515100s
 
 Day 18
 Output (part 1): 3647606140187
 Output (part 2): 323802071857594
-Solved in 0.003545700s
+Solved in 0.006528400s
 
 Day 19
 Output (part 1): 129
 Output (part 2): 243
-Solved in 0.020540400s
+Solved in 0.030534900s
 
-Total time:  3.315671800s
+Day 20
+Output (part 1): 29293767579581
+Output (part 2): 1989
+Solved in 0.034612000s
+
+Day 21
+Output (part 1): 1885
+Output (part 2): fllssz,kgbzf,zcdcdf,pzmg,kpsdtv,fvvrc,dqbjj,qpxhfp
+Solved in 0.000918200s
+
+Day 22
+Output (part 1): 32413
+Output (part 2): 31596
+Solved in 6.009162800s
+
+Total time:  11.020406600s
 

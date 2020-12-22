@@ -42,7 +42,64 @@ pub fn solve() {
 
     println!("Output (part 1): {}", corner_product);
 
-    println!("Output (part 2): {}", -1);
+    let mut oriented_tiles = Vec::new();
+    for alignment in &tile_alignments {
+        let tile = tiles
+            .iter()
+            .filter(|t| t.id == alignment.tile_id)
+            .next()
+            .unwrap();
+        let oriented_tile = orient_tile(alignment, tile);
+        oriented_tiles.push(oriented_tile);
+    }
+
+    let trimmed_tile_size = TILE_SIZE - 2;
+    let total_size = image_size * trimmed_tile_size;
+    let mut image: Vec<String> = Vec::with_capacity(total_size);
+
+    for (i, trimmed_tile) in oriented_tiles.iter().map(trim_tile_data).enumerate() {
+        let tile_start_row = (i / image_size) * trimmed_tile_size;
+        for j in 0..trimmed_tile_size {
+            if tile_start_row + j >= image.len() {
+                image.push(String::with_capacity(total_size));
+            }
+
+            image[tile_start_row + j].extend(trimmed_tile[j].chars());
+        }
+    }
+
+    let sea_monster_size = 15;
+    let pixel_count_on = image
+        .iter()
+        .flat_map(|row| row.chars())
+        .filter(|c| c == &'#')
+        .count();
+    let mut sea_monster_count = 0;
+    for _ in 0..4 {
+        let count = count_sea_monsters(&image);
+
+        if count > 0 {
+            sea_monster_count = count;
+            break;
+        }
+
+        let flip_image: Vec<_> = image.iter().cloned().rev().collect();
+        let count = count_sea_monsters(&flip_image);
+
+        if count > 0 {
+            sea_monster_count = count;
+            break;
+        }
+
+        let temp_image = ImageTile { id: 0, data: image };
+        image = rotate_90(&temp_image).data;
+    }
+
+    // Assumes no overlapping monsters
+    let non_monster_pixels = pixel_count_on - (sea_monster_count * sea_monster_size);
+
+    // println!("{:#?}", image);
+    println!("Output (part 2): {}", non_monster_pixels);
 }
 
 fn parse_tile(tile_lines: &[String]) -> ImageTile {
@@ -234,6 +291,98 @@ fn get_left_edge_inverse(alignment: &TileAlignment, edge_values: &HashMap<u32, V
     edges[edge_index as usize]
 }
 
+fn orient_tile(alignment: &TileAlignment, tile: &ImageTile) -> ImageTile {
+    let tile = match alignment.flip {
+        1 => flip_tile(tile),
+        _ => copy_tile(tile),
+    };
+
+    match alignment.rotation {
+        0 => tile,
+        1 => rotate_90(&tile),
+        2 => rotate_180(&tile),
+        3 => rotate_270(&tile),
+        _ => panic!("Invalid rotation {}", alignment.rotation),
+    }
+}
+
+fn copy_tile(tile: &ImageTile) -> ImageTile {
+    let new_data: Vec<_> = tile.data.iter().cloned().collect();
+    ImageTile {
+        id: tile.id,
+        data: new_data,
+    }
+}
+
+fn flip_tile(tile: &ImageTile) -> ImageTile {
+    let mut new_data = Vec::new();
+    for row in 0..TILE_SIZE {
+        let mut new_row = String::with_capacity(TILE_SIZE);
+        for col in 0..TILE_SIZE {
+            new_row.push(tile.data[col].chars().nth(row).unwrap());
+        }
+        new_data.push(new_row);
+    }
+    ImageTile {
+        id: tile.id,
+        data: new_data,
+    }
+}
+
+fn rotate_90(tile: &ImageTile) -> ImageTile {
+    let size = tile.data.len();
+    let mut new_data = Vec::new();
+    for row in 0..size {
+        let mut new_row = String::with_capacity(size);
+        for col in 0..size {
+            new_row.push(tile.data[col].chars().nth(size - row - 1).unwrap());
+        }
+        new_data.push(new_row);
+    }
+    ImageTile {
+        id: tile.id,
+        data: new_data,
+    }
+}
+
+fn rotate_180(tile: &ImageTile) -> ImageTile {
+    let new_data: Vec<String> = tile
+        .data
+        .iter()
+        .rev()
+        .map(|s| s.chars().rev().collect::<String>())
+        .collect();
+    ImageTile {
+        id: tile.id,
+        data: new_data,
+    }
+}
+
+fn rotate_270(tile: &ImageTile) -> ImageTile {
+    let size = tile.data.len();
+    let mut new_data = Vec::new();
+    for row in 0..size {
+        let mut new_row = String::with_capacity(size);
+        for col in 0..size {
+            new_row.push(tile.data[size - col - 1].chars().nth(row).unwrap());
+        }
+        new_data.push(new_row);
+    }
+    ImageTile {
+        id: tile.id,
+        data: new_data,
+    }
+}
+
+fn trim_tile_data(tile: &ImageTile) -> Vec<String> {
+    let mut new_data = Vec::new();
+    for row in 1..TILE_SIZE - 1 {
+        let new_row = tile.data[row].chars().skip(1).take(TILE_SIZE - 2).collect();
+        new_data.push(new_row);
+    }
+    new_data
+}
+
 fn pixel_value(pixel_raw: Option<char>) -> u16 {
     match pixel_raw {
         Some('#') => 1,
@@ -241,15 +390,35 @@ fn pixel_value(pixel_raw: Option<char>) -> u16 {
     }
 }
 
-/*
-Want left (3)
-0 rotation -> 1 flip, get 0
-1 rotation -> 1 flip, get 3
-2 rotations -> 1 flip, get 2
-3 rotations -> 1 flip, get 1
+fn count_sea_monsters(image: &Vec<String>) -> usize {
+    let mut count = 0;
+    let sea_monster_pattern = [
+        "                  # ",
+        "#    ##    ##    ###",
+        " #  #  #  #  #  #   ",
+    ];
+    let image_size = image.len();
 
-1 flip, 0 -> 0 flip, 0
-1 flip, 1 -> 0 flip, 3
-1 flip, 2 -> 0 flip, 2
-1 flip, 3 -> 0 flip, 1
-*/
+    for row in 0..image_size - 2 {
+        for col in 0..image_size - 20 {
+            let mut is_monster = true;
+            for pattern_row in 0..3 {
+                let pattern = sea_monster_pattern[pattern_row];
+                let matches_pattern = pattern
+                    .chars()
+                    .zip(image[row + pattern_row].chars().skip(col))
+                    .all(|(pat, img)| pat == img || pat != '#');
+                if !matches_pattern {
+                    is_monster = false;
+                    break;
+                }
+            }
+
+            if is_monster {
+                count += 1;
+            }
+        }
+    }
+
+    return count;
+}
