@@ -45,6 +45,7 @@ fn get_solve_functions() -> Vec<fn()> {
         day19::solve,
         day20::solve,
         day21::solve,
+        day22::solve,
     ]
 }
 
