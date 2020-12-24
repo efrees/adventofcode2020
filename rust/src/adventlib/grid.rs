@@ -181,10 +181,10 @@ impl Direction {
 
 pub struct SparseGrid<TContents> {
     grid_contents: HashMap<Point, TContents>,
-    min_x: i64,
-    min_y: i64,
-    max_x: i64,
-    max_y: i64,
+    pub min_x: i64,
+    pub min_y: i64,
+    pub max_x: i64,
+    pub max_y: i64,
 }
 
 impl<TContents: PartialEq> SparseGrid<TContents> {
