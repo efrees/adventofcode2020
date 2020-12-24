@@ -1,5 +1,3 @@
-use std::collections::VecDeque;
-
 use adventlib::collections::{CircleList, CircleListPointer};
 
 pub fn solve() {
@@ -43,50 +41,83 @@ pub fn solve() {
     println!("Output (part 1): {}", output);
 
     let max_value: u32 = 1_000_000;
-    let mut cup_order: VecDeque<u32> = input
+    let mut cup_order: CircleList<u32> = CircleList::with_capacity(max_value as usize);
+
+    for cup in input
         .trim()
         .as_bytes()
         .iter()
         .map(|c| (c - b'0') as u32)
         .chain(10..)
         .take(max_value as usize)
-        .collect();
+    {
+        cup_order.insert(cup);
+    }
+
+    let mut current = cup_order.next_node(cup_order.last.unwrap()); // wrap to first;
+
+    // println!("Starting one {:#?}", cup_order.get_value(current));
 
     // We'll rotate to ensure each round starts with the current cup at the beginning.
     for i in 0..10_000_000 {
         if i % 1000 == 0 {
             println!("making progress {}", i);
         }
-        let current = cup_order[0];
-        let next_three: Vec<_> = vec![cup_order[1], cup_order[2], cup_order[3]];
+        let current_value = cup_order.get_value(current).unwrap();
+        let mut next_three = Vec::new();
+        let mut next = cup_order.next_node(current);
 
-        cup_order.drain(0..4);
-        cup_order.push_back(current);
+        for _ in 0..3 {
+            next_three.push(cup_order.remove(next));
+            next = cup_order.next_node(current);
+        }
+        // println!("Next three: {:?}", next_three);
 
-        let mut target = if current > 1 { current - 1 } else { 9 };
+        // println!("Current value: {:?}", current_value);
+        let mut target = if current_value > 1 {
+            current_value - 1
+        } else {
+            max_value
+        };
 
         while next_three.contains(&target) {
-            target = if target > 1 { target - 1 } else { 9 }
+            target = if target > 1 { target - 1 } else { max_value }
+        }
+        //println!("Target: {:?}\n----", target);
+
+        // find destination
+        let mut destination_node_forward = next;
+        let mut destination_node_backward = next;
+        while cup_order.get_value(destination_node_forward).unwrap() != target
+            && cup_order.get_value(destination_node_backward).unwrap() != target
+        {
+            destination_node_forward = cup_order.next_node(destination_node_forward);
+            destination_node_backward = cup_order.prev_node(destination_node_backward);
         }
 
-        let target_i = cup_order
-            .iter()
-            .position(|&x| x == target)
-            .expect("Check your target assumptions");
+        let destination_node = if cup_order.get_value(destination_node_forward).unwrap() == target {
+            destination_node_forward
+        } else {
+            destination_node_backward
+        };
 
         for cup in next_three.iter().cloned().rev() {
-            cup_order.insert(target_i + 1, cup);
+            cup_order.insert_after(destination_node, cup);
         }
+
+        current = next;
     }
 
-    let one_position = cup_order
-        .iter()
-        .position(|&x| x == 1)
-        .expect("Don't lose the one");
-    let next1 = cup_order[one_position + 1];
-    let next2 = cup_order[one_position + 2];
+    let mut one_node = current;
+    while cup_order.get_value(one_node) != Some(1) {
+        one_node = cup_order.next_node(one_node);
+    }
 
-    let output = next1 as u64 * next2 as u64;
+    let next1 = cup_order.next_node(one_node);
+    let next2 = cup_order.next_node(next1);
+
+    let output =
+        cup_order.get_value(next1).unwrap() as u64 * cup_order.get_value(next2).unwrap() as u64;
 
     println!("Output (part 2): {}", output);
 }
