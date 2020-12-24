@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use adventlib::collections::{CircleList, CircleListPointer};
 
 pub fn solve() {
@@ -42,6 +44,7 @@ pub fn solve() {
 
     let max_value: u32 = 1_000_000;
     let mut cup_order: CircleList<u32> = CircleList::with_capacity(max_value as usize);
+    let mut cup_pointers = HashMap::new();
 
     for cup in input
         .trim()
@@ -52,28 +55,22 @@ pub fn solve() {
         .take(max_value as usize)
     {
         cup_order.insert(cup);
+        cup_pointers.insert(cup, cup_order.last.unwrap());
     }
 
     let mut current = cup_order.next_node(cup_order.last.unwrap()); // wrap to first;
 
-    // println!("Starting one {:#?}", cup_order.get_value(current));
-
     // We'll rotate to ensure each round starts with the current cup at the beginning.
-    for i in 0..10_000_000 {
-        if i % 1000 == 0 {
-            println!("making progress {}", i);
-        }
+    for _ in 0..10_000_000 {
         let current_value = cup_order.get_value(current).unwrap();
         let mut next_three = Vec::new();
         let mut next = cup_order.next_node(current);
 
         for _ in 0..3 {
-            next_three.push(cup_order.remove(next));
-            next = cup_order.next_node(current);
+            next_three.push(cup_order.get_value(next).unwrap());
+            next = cup_order.next_node(next);
         }
-        // println!("Next three: {:?}", next_three);
 
-        // println!("Current value: {:?}", current_value);
         let mut target = if current_value > 1 {
             current_value - 1
         } else {
@@ -83,26 +80,16 @@ pub fn solve() {
         while next_three.contains(&target) {
             target = if target > 1 { target - 1 } else { max_value }
         }
-        //println!("Target: {:?}\n----", target);
 
-        // find destination
-        let mut destination_node_forward = next;
-        let mut destination_node_backward = next;
-        while cup_order.get_value(destination_node_forward).unwrap() != target
-            && cup_order.get_value(destination_node_backward).unwrap() != target
-        {
-            destination_node_forward = cup_order.next_node(destination_node_forward);
-            destination_node_backward = cup_order.prev_node(destination_node_backward);
-        }
+        let destination_node = cup_pointers
+            .get(&target)
+            .expect("Index should have all targets");
 
-        let destination_node = if cup_order.get_value(destination_node_forward).unwrap() == target {
-            destination_node_forward
-        } else {
-            destination_node_backward
-        };
-
-        for cup in next_three.iter().cloned().rev() {
-            cup_order.insert_after(destination_node, cup);
+        for cup in next_three.iter().rev() {
+            let moving_node = cup_pointers
+                .get(cup)
+                .expect("Index should have all moved cups");
+            cup_order.move_node_after(*moving_node, *destination_node);
         }
 
         current = next;

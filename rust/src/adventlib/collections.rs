@@ -49,13 +49,39 @@ impl<T> CircleList<T> {
         let prev_key = cur_ptr.0;
         let new_key = self.nodes.insert(CircleListNode {
             value,
-            next_key: next_key,
-            prev_key: prev_key,
+            next_key,
+            prev_key,
         });
 
         self.nodes[next_key].prev_key = new_key;
         self.nodes[prev_key].next_key = new_key;
         self.last = Some(CircleListPointer(new_key));
+    }
+
+    /// Maintains the same node for the value so that pointers remain correct
+    pub fn move_node_after(
+        &mut self,
+        source_ptr: CircleListPointer,
+        target_ptr: CircleListPointer,
+    ) {
+        let new_next_key = self.nodes[target_ptr.0].next_key;
+        let new_prev_key = target_ptr.0;
+
+        // Unlink from old position
+        let old_next_key = self.nodes[source_ptr.0].next_key;
+        let old_prev_key = self.nodes[source_ptr.0].prev_key;
+        self.nodes[old_next_key].prev_key = old_prev_key;
+        self.nodes[old_prev_key].next_key = old_next_key;
+
+        // Link into new position
+        self.nodes[new_next_key].prev_key = source_ptr.0;
+        self.nodes[new_prev_key].next_key = source_ptr.0;
+
+        let source_node = &mut self.nodes[source_ptr.0];
+        source_node.next_key = new_next_key;
+        source_node.prev_key = new_prev_key;
+
+        self.last = Some(source_ptr);
     }
 
     pub fn next_node(&self, cur_ptr: CircleListPointer) -> CircleListPointer {
