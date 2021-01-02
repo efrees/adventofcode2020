@@ -5,10 +5,12 @@ namespace AdventOfCode2020.Solvers
 {
     internal class Day01Solver : ISolver
     {
+        private const string Name = "Day 1";
         private const string InputFile = "day01input.txt";
 
         public void Solve()
         {
+            Console.WriteLine(Name);
             var lines = Input.GetLinesFromFile(InputFile);
             var sortedNumbers = lines.Select(long.Parse).OrderBy(x => x).ToArray();
 

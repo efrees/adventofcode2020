@@ -15,24 +15,21 @@ namespace AdventOfCode2020
 
         static void Main()
         {
-            TimeAction(SolveAll);
+            ReportTime(SolveAll, "\nTotal time:");
         }
 
         private static void SolveAll()
         {
             foreach(var solver in Solvers)
             {
-                TimeAction(solver.Solve);
+                ReportTime(solver.Solve);
             }
         }
 
-        private static double TimeAction(Action action)
+        private static void ReportTime(Action action, string label = "Solved in")
         {
-            var stopwatch = new Stopwatch();
-            stopwatch.Restart();
-            action();
-            stopwatch.Stop();
-            return stopwatch.Elapsed.TotalMilliseconds;
+            var timeInMillis = TimeAction(action);
+            Console.WriteLine($"{label} {timeInMillis/1000:F9}s\n");
         }
 
         private static void ReportAverageTime(Action action)
@@ -47,6 +44,15 @@ namespace AdventOfCode2020
 Hi: {times.Max():N3}ms
 Lo: {times.Min():N3}ms
 Av: {times.Average():N3}ms");
+        }
+
+        private static double TimeAction(Action action)
+        {
+            var stopwatch = new Stopwatch();
+            stopwatch.Restart();
+            action();
+            stopwatch.Stop();
+            return stopwatch.Elapsed.TotalMilliseconds;
         }
     }
 }
