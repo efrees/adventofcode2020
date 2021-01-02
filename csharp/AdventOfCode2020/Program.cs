@@ -15,6 +15,7 @@ namespace AdventOfCode2020
             new Day03Solver(),
             new Day04Solver(),
             new Day05Solver(),
+            new Day06Solver(),
         };
 
         static void Main()
