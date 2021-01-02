@@ -44,7 +44,13 @@ namespace AdventOfCode2020.Solvers
 
         private int GetPart2Answer(List<(PasswordRule rule, string password)> rules)
         {
-            return -1;
+            return rules.Count(pair =>
+            {
+                var (rule, password) = pair;
+
+                return (password[rule.Low - 1] == rule.Required)
+                       ^ (password[rule.High - 1] == rule.Required);
+            });
         }
 
         private class PasswordRule
