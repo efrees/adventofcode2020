@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    
     <None Update="InputFiles\*.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

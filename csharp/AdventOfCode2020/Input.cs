@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace AdventOfCode2020
 {
@@ -9,7 +7,7 @@ namespace AdventOfCode2020
     {
         internal static string GetInputFromFile(string filename)
         {
-            return File.ReadAllText("../../InputFiles/" + filename);
+            return File.ReadAllText("InputFiles/" + filename);
         }
 
         internal static IEnumerable<string> GetLinesFromFile(string filename)
