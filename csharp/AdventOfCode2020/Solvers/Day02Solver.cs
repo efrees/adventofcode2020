@@ -12,6 +12,7 @@ namespace AdventOfCode2020.Solvers
 
         public void Solve()
         {
+            Console.WriteLine(Name);
             var rules = Input.GetLinesFromFile(InputFile).Select(ParseRules).ToList();
 
             Console.WriteLine($"Output (part 1): {GetPart1Answer(rules)}");
