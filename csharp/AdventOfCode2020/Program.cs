@@ -10,7 +10,8 @@ namespace AdventOfCode2020
     {
         private static readonly IReadOnlyList<ISolver> Solvers = new ISolver[]
         {
-            new Day01Solver()
+            new Day01Solver(),
+            new Day02Solver(),
         };
 
         static void Main()
