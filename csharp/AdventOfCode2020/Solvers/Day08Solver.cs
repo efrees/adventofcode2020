@@ -31,11 +31,39 @@ namespace AdventOfCode2020.Solvers
 
         private int GetPart1Answer(List<Instruction> instructions)
         {
+            var (accumulator, _) = RunToExit(instructions);
+            return accumulator;
+        }
+
+        private int GetPart2Answer(List<Instruction> instructions)
+        {
+            foreach (var instructionToFlip in instructions)
+            {
+                if (instructionToFlip.OpCode == "acc")
+                {
+                    continue;
+                }
+
+                instructionToFlip.OpCode = instructionToFlip.OpCode switch { "nop" => "jmp", "jmp" => "nop" };
+                var (accumulator, exitedNormally) = RunToExit(instructions);
+                instructionToFlip.OpCode = instructionToFlip.OpCode switch { "nop" => "jmp", "jmp" => "nop" };
+
+                if (exitedNormally)
+                {
+                    return accumulator;
+                }
+            }
+
+            return -1;
+        }
+
+        private static (int accumulator, bool exitedNormally) RunToExit(List<Instruction> instructions)
+        {
             var visitedInstructions = new HashSet<int>();
             var accumulator = 0;
             var instruction = 0;
 
-            while (!visitedInstructions.Contains(instruction))
+            while (!visitedInstructions.Contains(instruction) && instruction < instructions.Count)
             {
                 visitedInstructions.Add(instruction);
 
@@ -43,21 +71,18 @@ namespace AdventOfCode2020.Solvers
                 switch (instr.OpCode)
                 {
                     case "nop": break;
-                    case "acc": accumulator += instr.Arg;
+                    case "acc":
+                        accumulator += instr.Arg;
                         break;
-                    case "jmp": instruction += instr.Arg - 1;
+                    case "jmp":
+                        instruction += instr.Arg - 1;
                         break;
                 }
 
                 instruction++;
             }
 
-            return accumulator;
-        }
-
-        private int GetPart2Answer(List<Instruction> instructions)
-        {
-            return -1;
+            return (accumulator, exitedNormally: instruction >= instructions.Count );
         }
 
         private class Instruction
