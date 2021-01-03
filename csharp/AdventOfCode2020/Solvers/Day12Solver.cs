@@ -48,7 +48,30 @@ namespace AdventOfCode2020.Solvers
 
         private long GetPart2Answer(List<string> directions)
         {
-            return -1;
+            var currentPosition = (x: 0, y: 0);
+            var currentWaypoint = (x: 10, y: 1);
+
+            foreach (var direction in directions)
+            {
+                var amount = int.Parse(direction.Substring(1));
+                currentWaypoint = direction[0] switch
+                {
+                    'N' => AddVectors(MultiplyScalar((0, 1), amount), currentWaypoint),
+                    'S' => AddVectors(MultiplyScalar((0, -1), amount), currentWaypoint),
+                    'E' => AddVectors(MultiplyScalar((1, 0), amount), currentWaypoint),
+                    'W' => AddVectors(MultiplyScalar((-1, 0), amount), currentWaypoint),
+                    'L' => RotateLeft(currentWaypoint, amount),
+                    'R' => RotateLeft(currentWaypoint, 360 - amount),
+                    _ => currentWaypoint
+                };
+                currentPosition = direction[0] switch
+                {
+                    'F' => AddVectors(MultiplyScalar(currentWaypoint, amount), currentPosition),
+                    _ => currentPosition
+                };
+            }
+
+            return Math.Abs(currentPosition.x) + Math.Abs(currentPosition.y);
         }
 
         private (int x, int y) AddVectors((int x, int y) point1, (int x, int y) point2)
