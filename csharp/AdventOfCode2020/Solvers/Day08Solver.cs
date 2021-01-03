@@ -43,9 +43,9 @@ namespace AdventOfCode2020.Solvers
                     continue;
                 }
 
-                instructionToFlip.OpCode = instructionToFlip.OpCode switch { "nop" => "jmp", "jmp" => "nop" };
+                instructionToFlip.OpCode = FlipOpCode(instructionToFlip);
                 var (accumulator, exitedNormally) = RunToExit(instructions);
-                instructionToFlip.OpCode = instructionToFlip.OpCode switch { "nop" => "jmp", "jmp" => "nop" };
+                instructionToFlip.OpCode = FlipOpCode(instructionToFlip);
 
                 if (exitedNormally)
                 {
@@ -54,6 +54,16 @@ namespace AdventOfCode2020.Solvers
             }
 
             return -1;
+        }
+
+        private static string FlipOpCode(Instruction instructionToFlip)
+        {
+            return instructionToFlip.OpCode switch
+            {
+                "nop" => "jmp",
+                "jmp" => "nop",
+                var x => x
+            };
         }
 
         private static (int accumulator, bool exitedNormally) RunToExit(List<Instruction> instructions)
@@ -81,7 +91,7 @@ namespace AdventOfCode2020.Solvers
                 instruction++;
             }
 
-            return (accumulator, exitedNormally: instruction >= instructions.Count );
+            return (accumulator, exitedNormally: instruction >= instructions.Count);
         }
 
         private class Instruction
