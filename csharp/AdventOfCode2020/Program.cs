@@ -22,14 +22,17 @@ namespace AdventOfCode2020
             new Day10Solver(),
         };
 
-        static void Main()
+        public static void Main()
         {
             ReportTime(SolveAll, "Total time:");
+#if RUNTIMES
+            ReportAllAverages();
+#endif
         }
 
         private static void SolveAll()
         {
-            foreach(var solver in Solvers)
+            foreach (var solver in Solvers)
             {
                 ReportTime(solver.Solve);
             }
@@ -38,21 +41,31 @@ namespace AdventOfCode2020
         private static void ReportTime(Action action, string label = "Solved in")
         {
             var timeInMillis = TimeAction(action);
-            Console.WriteLine($"{label} {timeInMillis/1000:F9}s\n");
+            Console.WriteLine($"{label} {timeInMillis / 1000:F9}s\n");
         }
 
-        private static void ReportAverageTime(Action action)
+        private static void ReportAllAverages()
+        {
+            const int repetitions = 5;
+            Console.WriteLine($"Day\tAverage Runtime in Seconds ({repetitions} attempts)");
+
+            var results = Solvers.Select((solver, i) => (day: i + 1, time: GetAverageTime(solver.Solve, repetitions))).ToList();
+            foreach (var (day, time) in results)
+            {
+                Console.WriteLine($"{day}\t{time / 1000:F9}s");
+            }
+        }
+
+        private static double GetAverageTime(Action action, int repetitions)
         {
             var times = new List<double>();
-            for (var i = 0; i < 10; i++)
+            for (var i = 0; i < repetitions; i++)
             {
                 times.Add(TimeAction(action));
             }
 
-            Console.WriteLine($@"
-Hi: {times.Max():N3}ms
-Lo: {times.Min():N3}ms
-Av: {times.Average():N3}ms");
+            Console.WriteLine(string.Join(", ", times));
+            return times.Average();
         }
 
         private static double TimeAction(Action action)

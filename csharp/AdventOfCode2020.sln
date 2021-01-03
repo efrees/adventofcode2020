@@ -3,14 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode2020", "AdventOfCode2020\AdventOfCode2020.csproj", "{452D37CA-3A6A-4EAF-BCB3-BE3A72D95CB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventOfCode2020", "AdventOfCode2020\AdventOfCode2020.csproj", "{452D37CA-3A6A-4EAF-BCB3-BE3A72D95CB1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		AverageRuntimes|Any CPU = AverageRuntimes|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{452D37CA-3A6A-4EAF-BCB3-BE3A72D95CB1}.AverageRuntimes|Any CPU.ActiveCfg = AverageRuntimes|Any CPU
+		{452D37CA-3A6A-4EAF-BCB3-BE3A72D95CB1}.AverageRuntimes|Any CPU.Build.0 = AverageRuntimes|Any CPU
 		{452D37CA-3A6A-4EAF-BCB3-BE3A72D95CB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{452D37CA-3A6A-4EAF-BCB3-BE3A72D95CB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{452D37CA-3A6A-4EAF-BCB3-BE3A72D95CB1}.Release|Any CPU.ActiveCfg = Release|Any CPU

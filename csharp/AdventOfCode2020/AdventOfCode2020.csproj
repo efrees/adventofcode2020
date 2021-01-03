@@ -3,6 +3,12 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Configurations>Debug;Release;AverageRuntimes</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='AverageRuntimes|AnyCPU'">
+    <Optimize>true</Optimize>
+    <DefineConstants>RUNTIMES;$(DefineConstants)</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
