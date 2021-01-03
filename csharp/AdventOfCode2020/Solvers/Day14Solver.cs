@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace AdventOfCode2020.Solvers
@@ -63,7 +64,60 @@ namespace AdventOfCode2020.Solvers
 
         private long GetPart2Answer(List<string> commands)
         {
-            return -1;
+            var memory = new Dictionary<long, long>();
+            var currentMaskSet = new List<string>();
+
+            foreach (var command in commands)
+            {
+                if (command.StartsWith("mask = "))
+                {
+                    var rawMask = command.Substring("mask = ".Length);
+                    currentMaskSet = GenerateAllMasks(rawMask);
+                }
+                else
+                {
+                    var match = Regex.Match(command, @"mem\[(\d+)\] = (\d+)");
+                    var address = int.Parse(match.Groups[1].Value);
+                    var value = long.Parse(match.Groups[2].Value);
+
+                    foreach (var mask in currentMaskSet)
+                    {
+                        memory[ApplyMask(address, mask)] = value;
+                    }
+                }
+            }
+
+            return memory.Values.Sum();
+        }
+
+        private List<string> GenerateAllMasks(string rawMask)
+        {
+            var floatingBitCount = rawMask.Count(bit => bit == 'X');
+            var numberOfBitCombinations = 1 << floatingBitCount;
+            var result = new List<string>(numberOfBitCombinations);
+            var maskBuilder = new StringBuilder(rawMask.Length);
+            foreach (var floatingBits in Enumerable.Range(0, numberOfBitCombinations))
+            {
+                var nextFloatingBitIndex = 0;
+                foreach (var bit in rawMask)
+                {
+                    if (bit == 'X')
+                    {
+                        maskBuilder.Append((floatingBits >> nextFloatingBitIndex) & 1);
+                        nextFloatingBitIndex++;
+                    }
+                    else
+                    {
+                        // Change '0' to 'X' to allow reuse of ApplyMask function
+                        maskBuilder.Append(bit switch { '0' => 'X', var one => one });
+                    }
+                }
+
+                result.Add(maskBuilder.ToString());
+                maskBuilder.Clear();
+            }
+
+            return result;
         }
     }
 }
