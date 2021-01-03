@@ -22,7 +22,7 @@ namespace AdventOfCode2020
 
         static void Main()
         {
-            ReportTime(SolveAll, "\nTotal time:");
+            ReportTime(SolveAll, "Total time:");
         }
 
         private static void SolveAll()

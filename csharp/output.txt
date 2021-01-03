@@ -1,45 +1,42 @@
-C:\Development\exercises\adventofcode2020\csharp\AdventOfCode2020\Solvers\Day08Solver.cs(47,69): warning CS8509: The switch expression does not handle all possible values of its input type (it is not exhaustive). For example, the pattern '""' is not covered. [C:\Development\exercises\adventofcode2020\csharp\AdventOfCode2020\AdventOfCode2020.csproj]
-C:\Development\exercises\adventofcode2020\csharp\AdventOfCode2020\Solvers\Day08Solver.cs(49,69): warning CS8509: The switch expression does not handle all possible values of its input type (it is not exhaustive). For example, the pattern '""' is not covered. [C:\Development\exercises\adventofcode2020\csharp\AdventOfCode2020\AdventOfCode2020.csproj]
 Day 1
 Output (part 1): 866436
 Output (part 2): 276650720
-Solved in 0.029506600s
+Solved in 0.029196700s
 
 Day 2
 Output (part 1): 586
 Output (part 2): 352
-Solved in 0.013565300s
+Solved in 0.013395700s
 
 Day 3
 Output (part 1): 272
 Output (part 2): 3898725600
-Solved in 0.002989000s
+Solved in 0.003828800s
 
 Day 4
 Output (part 1): 260
 Output (part 2): 153
-Solved in 0.015876400s
+Solved in 0.014071200s
 
 Day 5
 Output (part 1): 963
 Output (part 2): 592
-Solved in 0.005401600s
+Solved in 0.008161500s
 
 Day 6
 Output (part 1): 6763
 Output (part 2): 3512
-Solved in 0.008973000s
+Solved in 0.010968300s
 
 Day 7
 Output (part 1): 101
 Output (part 2): 108636
-Solved in 0.009850500s
+Solved in 0.009679700s
 
 Day 8
 Output (part 1): 1317
 Output (part 2): 1033
-Solved in 0.005762700s
+Solved in 0.004954000s
 
-
-Total time: 0.093551300s
+Total time: 0.096017600s
 
