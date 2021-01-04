@@ -14,7 +14,7 @@ I've done in the chart below.
 |      |1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|
 |------|-|-|-|-|-|-|-|-|-|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
 |**Rust**|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|
-|**C#**|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|☆|☆|☆|☆|☆|☆|☆|☆|☆|☆|☆|☆|☆|☆|☆|☆|☆|
+|**C#**|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|🌟|☆|☆|☆|☆|☆|☆|☆|☆|☆|☆|☆|
 
 ⭐ - First star completed\
 🌟 - Both stars completed
@@ -25,12 +25,14 @@ I've added `output.txt` as a reference for my answers (for convenient checking w
 Rust - [output.txt](rust/output.txt)\
 C# - [output.txt](csharp/output.txt)
 
-![Average runtimes](rust/RuntimesChart.png)
+![Average runtimes](RuntimesChart.png)
 
 ## Environment
 * VS Code
   * [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=matklad.rust-analyzer)
   * [CodeLLDB](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb)
+* Visual Studio 2019
+  * [.NET Core 3.1](https://dotnet.microsoft.com/download/dotnet-core/3.1) / C# 8
 
 ## Links
 * [Advent of Code](https://adventofcode.com)
