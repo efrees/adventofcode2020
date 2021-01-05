@@ -26,13 +26,51 @@ namespace AdventOfCode2020.Solvers
 
             var allRanges = rules.SelectMany(rule => rule.Ranges).ToList();
             return nearbyTickets.SelectMany(ticket => ticket)
-                    .Where(field => !allRanges.Any(range => field >= range.low && field <= range.high))
-                    .Sum();
+                .Where(field => !SomeRangeContains(allRanges, field))
+                .Sum();
         }
 
         private long GetPart2Answer(List<string> groups)
         {
-            return -1;
+            var rules = groups[0].SplitIntoLines().Select(ParseRule).ToList();
+            var myTicket = ParseTicket(groups[1].SplitIntoLines().Last());
+            var nearbyTickets = groups[2].SplitIntoLines().Skip(1).Select(ParseTicket).ToList();
+            var allRanges = rules.SelectMany(rule => rule.Ranges).ToList();
+
+            var nearbyValidTickets = nearbyTickets
+                .Where(fields => fields.All(field => SomeRangeContains(allRanges, field)));
+
+            var validTicketFieldValues = nearbyValidTickets
+                .SelectMany(values => values.Select((value, index) => (value, index)))
+                .ToLookup(x => x.index, x => x.value);
+            var possibleMatchesForField = Enumerable.Range(0, myTicket.Count)
+                .ToDictionary(fieldIndex => fieldIndex,
+                    fieldIndex => rules
+                        .Where(rule => validTicketFieldValues[fieldIndex].All(value => SomeRangeContains(rule.Ranges, value)))
+                        .Select(r => r.Name).ToHashSet());
+            var fieldMatches = new Dictionary<int, string>();
+
+            while (possibleMatchesForField.Any())
+            {
+                var (fieldPosition, fieldNames) = possibleMatchesForField.First(pair => pair.Value.Count == 1);
+                var fieldName = fieldNames.First();
+                fieldMatches[fieldPosition] = fieldName;
+
+                possibleMatchesForField.Remove(fieldPosition);
+                foreach (var possibilities in possibleMatchesForField.Values)
+                {
+                    possibilities.Remove(fieldName);
+                }
+            }
+
+            var fieldPositions = fieldMatches.Where(pair => pair.Value.StartsWith("departure")).Select(pair => pair.Key);
+
+            return fieldPositions.Select(index => myTicket[index]).Aggregate(1L, (product, next) => product * (long)next);
+        }
+
+        private static bool SomeRangeContains(List<(int low, int high)> ranges, int field)
+        {
+            return ranges.Any(range => field >= range.low && field <= range.high);
         }
 
         private FieldRule ParseRule(string line)
