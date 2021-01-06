@@ -34,7 +34,7 @@ namespace AdventOfCode2020.Solvers
             var result = 0L;
             var pendingOperator = "";
 
-            while(tokens.Any())
+            while (tokens.Any())
             {
                 var token = tokens[0];
                 tokens.RemoveAt(0);
@@ -74,7 +74,58 @@ namespace AdventOfCode2020.Solvers
 
         private long GetPart2Answer(List<string> expressions)
         {
-            return -1;
+            return expressions.Select(EvaluateForPart2).Sum();
+        }
+
+        private long EvaluateForPart2(string expression)
+        {
+            var tokens = expression.Replace("(", "( ").Replace(")", " )").Split(" ").ToList();
+            return EvaluateForPart2Recursively(tokens);
+        }
+
+        private long EvaluateForPart2Recursively(List<string> tokens)
+        {
+            var pendingOperands = new Stack<long>();
+            var pendingAddition = false;
+
+            while (tokens.Any())
+            {
+                var token = tokens[0];
+                tokens.RemoveAt(0);
+
+                if (token == "*")
+                {
+                    //We'll calculate at the end
+                    continue;
+                }
+
+                if (token == "+")
+                {
+                    pendingAddition = true;
+                    continue;
+                }
+
+                if (token == ")")
+                {
+                    break;
+                }
+
+                var nextValue = token == "("
+                    ? EvaluateForPart2Recursively(tokens)
+                    : long.Parse(token);
+
+                if (pendingAddition)
+                {
+                    pendingAddition = false;
+                    pendingOperands.Push(pendingOperands.Pop() + nextValue);
+                }
+                else
+                {
+                    pendingOperands.Push(nextValue);
+                }
+            }
+
+            return pendingOperands.Aggregate((product, next) => product * next);
         }
     }
 }
