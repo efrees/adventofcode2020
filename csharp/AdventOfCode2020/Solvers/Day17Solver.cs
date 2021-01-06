@@ -18,9 +18,9 @@ namespace AdventOfCode2020.Solvers
             Console.WriteLine($"Output (part 2): {GetPart2Answer(startingGrid)}");
         }
 
-        private long GetPart1Answer(List<string> sequence)
+        private long GetPart1Answer(List<string> startingGrid)
         {
-            var grid = InitializeGrid3d(sequence);
+            var grid = InitializeGrid3d(startingGrid);
             var nextGrid = new HashSet<(int, int, int)>();
 
             var cycleCount = 6;
@@ -49,9 +49,9 @@ namespace AdventOfCode2020.Solvers
             return grid.Count;
         }
 
-        private long GetPart2Answer(List<string> sequence)
+        private long GetPart2Answer(List<string> startingGrid)
         {
-            var grid = InitializeGrid4d(sequence);
+            var grid = InitializeGrid4d(startingGrid);
             var nextGrid = new HashSet<(int, int, int, int)>();
 
             var cycleCount = 6;
@@ -80,14 +80,14 @@ namespace AdventOfCode2020.Solvers
             return grid.Count;
         }
 
-        private static HashSet<(int, int, int)> InitializeGrid3d(IReadOnlyList<string> sequence)
+        private static HashSet<(int, int, int)> InitializeGrid3d(IReadOnlyList<string> startingGrid)
         {
             var grid = new HashSet<(int, int, int)>();
-            for (var i = 0; i < sequence.Count; i++)
+            for (var i = 0; i < startingGrid.Count; i++)
             {
-                for (var j = 0; j < sequence[i].Length; j++)
+                for (var j = 0; j < startingGrid[i].Length; j++)
                 {
-                    if (sequence[i][j] == '#')
+                    if (startingGrid[i][j] == '#')
                     {
                         grid.Add((i, j, 0));
                     }
@@ -97,14 +97,14 @@ namespace AdventOfCode2020.Solvers
             return grid;
         }
 
-        private static HashSet<(int, int, int, int)> InitializeGrid4d(IReadOnlyList<string> sequence)
+        private static HashSet<(int, int, int, int)> InitializeGrid4d(IReadOnlyList<string> startingGrid)
         {
             var grid = new HashSet<(int, int, int, int)>();
-            for (var i = 0; i < sequence.Count; i++)
+            for (var i = 0; i < startingGrid.Count; i++)
             {
-                for (var j = 0; j < sequence[i].Length; j++)
+                for (var j = 0; j < startingGrid[i].Length; j++)
                 {
-                    if (sequence[i][j] == '#')
+                    if (startingGrid[i][j] == '#')
                     {
                         grid.Add((i, j, 0, 0));
                     }
