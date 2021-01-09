@@ -61,7 +61,7 @@ namespace AdventOfCode2020
             var results = Solvers.Select((solver, i) => (day: i + 1, time: GetAverageTime(solver.Solve, repetitions))).ToList();
             foreach (var (day, time) in results)
             {
-                Console.WriteLine($"{day}\t{time / 1000:F9}s");
+                Console.WriteLine($"{day}\t{time / 1000:F9}");
             }
         }
 
