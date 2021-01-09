@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 
 namespace AdventOfCode2020.Solvers
@@ -14,7 +13,7 @@ namespace AdventOfCode2020.Solvers
         {
             Console.WriteLine(Name);
             var groups = Input.GetInputFromFile(InputFile).Split("\n\n");
-            var rules = groups[0].SplitIntoLines().Select(ParseRule).ToList();
+            var rules = groups[0].SplitIntoLines().Select(ParseRule).ToDictionary(r => r.RuleId, r => r);
             var strings = groups[1].SplitIntoLines().ToList();
 
             Console.WriteLine($"Output (part 1): {GetPart1Answer(rules, strings)}");
@@ -45,15 +44,35 @@ namespace AdventOfCode2020.Solvers
             };
         }
 
-        private long GetPart1Answer(List<GrammarRule> rules, List<string> strings)
+        private long GetPart1Answer(Dictionary<int, GrammarRule> rules, List<string> strings)
         {
-            var ruleLookup = rules.ToDictionary(r => r.RuleId, r => r);
             var rulesToMatch = new Stack<int>();
             return strings.Count(s =>
             {
                 rulesToMatch.Clear();
                 rulesToMatch.Push(0);
-                return StringMatches(s.ToCharArray(), rulesToMatch, ruleLookup);
+                return StringMatches(s.ToCharArray(), rulesToMatch, rules);
+            });
+        }
+
+        private long GetPart2Answer(Dictionary<int, GrammarRule> rules, List<string> strings)
+        {
+            rules[8] = new GrammarRule
+            {
+                RuleId = 8,
+                SubRuleSequences = new[] { new[] { 42 }.ToList(), new[] { 42, 8 }.ToList() }
+            };
+            rules[11] = new GrammarRule
+            {
+                RuleId = 11,
+                SubRuleSequences = new[] { new[] { 42, 31 }.ToList(), new[] { 42, 11, 31 }.ToList() }
+            };
+            var rulesToMatch = new Stack<int>();
+            return strings.Count(s =>
+            {
+                rulesToMatch.Clear();
+                rulesToMatch.Push(0);
+                return StringMatches(s.ToCharArray(), rulesToMatch, rules);
             });
         }
 
@@ -100,11 +119,6 @@ namespace AdventOfCode2020.Solvers
             // Put it back for the recursive level above
             rulesToMatch.Push(nextRuleId);
             return false;
-        }
-
-        private long GetPart2Answer(List<GrammarRule> rules, List<string> strings)
-        {
-            return -1;
         }
 
         private class GrammarRule
