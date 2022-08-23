@@ -1,97 +1,102 @@
 Day 1
 Output (part 1): 866436
 Output (part 2): 276650720
-Solved in 0.030904300s
+Solved in 0.041528300s
 
 Day 2
 Output (part 1): 586
 Output (part 2): 352
-Solved in 0.016852100s
+Solved in 0.015086900s
 
 Day 3
 Output (part 1): 272
 Output (part 2): 3898725600
-Solved in 0.004364700s
+Solved in 0.003803400s
 
 Day 4
 Output (part 1): 260
 Output (part 2): 153
-Solved in 0.034061200s
+Solved in 0.013204300s
 
 Day 5
 Output (part 1): 963
 Output (part 2): 592
-Solved in 0.008178600s
+Solved in 0.007471500s
 
 Day 6
 Output (part 1): 6763
 Output (part 2): 3512
-Solved in 0.010918700s
+Solved in 0.009366400s
 
 Day 7
 Output (part 1): 101
 Output (part 2): 108636
-Solved in 0.014176900s
+Solved in 0.010422800s
 
 Day 8
 Output (part 1): 1317
 Output (part 2): 1033
-Solved in 0.004840000s
+Solved in 0.005487500s
 
 Day 9
 Output (part 1): 373803594
 Output (part 2): 51152360
-Solved in 0.010108100s
+Solved in 0.009983500s
 
 Day 10
 Output (part 1): 2482
 Output (part 2): 96717311574016
-Solved in 0.003691200s
+Solved in 0.004793400s
 
 Day 11
 Output (part 1): 2249
 Output (part 2): 2023
-Solved in 0.680035700s
+Solved in 0.738139000s
 
 Day 12
 Output (part 1): 879
 Output (part 2): 18107
-Solved in 0.005301200s
+Solved in 0.005106700s
 
 Day 13
 Output (part 1): 205
 Output (part 2): 803025030761664
-Solved in 0.010745900s
+Solved in 0.008940700s
 
 Day 14
 Output (part 1): 2346881602152
 Output (part 2): 3885232834169
-Solved in 0.035678300s
+Solved in 0.039009100s
 
 Day 15
 Output (part 1): 1085
 Output (part 2): 10652
-Solved in 2.688411800s
+Solved in 2.960222300s
 
 Day 16
 Output (part 1): 21956
 Output (part 2): 3709435214239
-Solved in 0.026534600s
+Solved in 0.032522300s
 
 Day 17
 Output (part 1): 298
 Output (part 2): 1792
-Solved in 0.064671500s
+Solved in 0.076644600s
 
 Day 18
 Output (part 1): 3647606140187
 Output (part 2): 323802071857594
-Solved in 0.008291000s
+Solved in 0.009315200s
 
 Day 19
 Output (part 1): 129
 Output (part 2): 243
-Solved in 0.065163300s
+Solved in 0.073156000s
 
-Total time: 3.725310500s
+Day 20
+Output (part 1): 29293767579581
+Output (part 2): 1989
+Solved in 0.149896300s
+
+Total time: 4.216082600s
 

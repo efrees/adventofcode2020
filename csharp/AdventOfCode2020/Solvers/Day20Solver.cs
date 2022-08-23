@@ -34,11 +34,7 @@ namespace AdventOfCode2020.Solvers
 
         private long GetPart1Answer(Dictionary<int, Tile> tiles)
         {
-            var tileEdges = tiles.Values.Select(tile => (tile.Id, GetAllEdges(tile))).ToDictionary(x => x.Id, x => x.Item2);
-            var alignments = new List<TileAlignment>();
-            var usedTiles = new HashSet<int>();
-            var lookupByEdge = tileEdges.SelectMany(pair => pair.Value.Select(v => (pair.Key, edge: v))).ToLookup(x => x.edge, x => x.Key);
-            AlignAllTiles(usedTiles, tileEdges, lookupByEdge, tiles, alignments);
+            var alignments = GetTileAlignments(tiles);
 
             var imageSize = Convert.ToInt32(Math.Sqrt(tiles.Count));
 
@@ -50,7 +46,35 @@ namespace AdventOfCode2020.Solvers
 
         private long GetPart2Answer(Dictionary<int, Tile> tiles)
         {
-            return -1;
+            var monsterPattern = new[]
+            {
+                "                  # ",
+                "#    ##    ##    ###",
+                " #  #  #  #  #  #   "
+            };
+            var alignments = GetTileAlignments(tiles);
+            var image = AssembleImage(tiles, alignments);
+
+            var monsterCount = AlignAndCountMonsters(image, monsterPattern);
+
+            return CountHashes(image)
+                - monsterCount * CountHashes(monsterPattern.Select(row => row.ToCharArray()).ToArray());
+        }
+
+        private static int CountHashes(char[][] image)
+        {
+            return image.SelectMany(row => row)
+                .Count(pixel => pixel == '#');
+        }
+
+        private List<TileAlignment> GetTileAlignments(Dictionary<int, Tile> tiles)
+        {
+            var tileEdges = tiles.Values.Select(tile => (tile.Id, GetAllEdges(tile))).ToDictionary(x => x.Id, x => x.Item2);
+            var alignments = new List<TileAlignment>();
+            var usedTiles = new HashSet<int>();
+            var lookupByEdge = tileEdges.SelectMany(pair => pair.Value.Select(v => (pair.Key, edge: v))).ToLookup(x => x.edge, x => x.Key);
+            AlignAllTiles(usedTiles, tileEdges, lookupByEdge, tiles, alignments);
+            return alignments;
         }
 
         private bool AlignAllTiles(HashSet<int> usedTiles,
@@ -121,6 +145,154 @@ namespace AdventOfCode2020.Solvers
             }
 
             return false;
+        }
+
+        private char[][] AssembleImage(Dictionary<int, Tile> tiles, List<TileAlignment> alignments)
+        {
+            var tileRowCount = (int)Math.Sqrt(tiles.Count());
+            var finalTileSize = tiles.First().Value.Pixels.Length - 2;
+            var pixelRowCount = tileRowCount * finalTileSize;
+
+            var fullImage = new char[pixelRowCount][];
+            foreach (var row in Enumerable.Range(0, pixelRowCount))
+            {
+                fullImage[row] = new char[pixelRowCount];
+            }
+
+            for (var tileIndex = 0; tileIndex < alignments.Count; tileIndex++)
+            {
+                var tileX = tileIndex % tileRowCount;
+                var tileY = tileIndex / tileRowCount;
+                var alignment = alignments[tileIndex];
+
+                var rotatedTile = RotateTileToAlignment(tiles[alignment.TileId], alignment.Alignment);
+
+                for (var i = 1; i < rotatedTile.Length - 1; i++)
+                {
+                    for (var j = 1; j < rotatedTile.Length - 1; j++)
+                    {
+                        fullImage[tileY * finalTileSize + i - 1][tileX * finalTileSize + j - 1] = rotatedTile[i][j];
+                    }
+                }
+            }
+
+            return fullImage;
+        }
+
+        private int AlignAndCountMonsters(char[][] image, string[] monsterPattern)
+        {
+            for (var i = 0; i < 8; i++)
+            {
+                if (i == 4)
+                {
+                    image = Transpose(image);
+                }
+
+                var monsterCount = CountMonsters(image, monsterPattern);
+                if (monsterCount > 0)
+                {
+                    return monsterCount;
+                }
+
+                image = RotateCCW(image);
+            }
+
+            return 0;
+        }
+
+        private int CountMonsters(char[][] image, string[] monsterPattern)
+        {
+            var monsterCount = 0;
+            for (var i = 0; i < image.Length - monsterPattern.Length; i++)
+            {
+                for (var j = 0; j < image[i].Length - monsterPattern[0].Length; j++)
+                {
+                    var isMonster = IsMonsterAtCoordinates(image, monsterPattern, i, j);
+
+                    if (isMonster)
+                    {
+                        monsterCount++;
+                    }
+                }
+            }
+
+            return monsterCount;
+        }
+
+        private static bool IsMonsterAtCoordinates(char[][] image, string[] monsterPattern, int row, int col)
+        {
+            for (var mi = 0; mi < monsterPattern.Length; mi++)
+            {
+                for (var mj = 0; mj < monsterPattern[mi].Length; mj++)
+                {
+                    if (monsterPattern[mi][mj] == '#' && monsterPattern[mi][mj] != image[row + mi][col + mj])
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private char[][] RotateTileToAlignment(Tile tile, int alignment)
+        {
+            var pixels = tile.Pixels;
+
+            if (alignment >= 4)
+            {
+                pixels = Transpose(pixels);
+                alignment %= 4;
+            }
+
+            for (var i = 0; i < alignment; i++)
+            {
+                pixels = RotateCCW(pixels);
+            }
+
+            return pixels;
+        }
+
+        private static void PrintImage(char[][] image)
+        {
+            foreach (var row in image)
+            {
+                Console.WriteLine(new string(row));
+            }
+
+            Console.WriteLine();
+        }
+
+        private char[][] Transpose(char[][] pixels)
+        {
+            var newPixels = new char[pixels.Length][];
+
+            for (var i = 0; i < pixels.Length; i++)
+            {
+                newPixels[i] = new char[pixels.Length];
+                for (var j = 0; j < pixels.Length; j++)
+                {
+                    newPixels[i][j] = pixels[j][i];
+                }
+            }
+
+            return newPixels;
+        }
+
+        private char[][] RotateCCW(char[][] pixels)
+        {
+            var newPixels = new char[pixels.Length][];
+
+            for (var i = 0; i < pixels.Length; i++)
+            {
+                newPixels[i] = new char[pixels.Length];
+                for (var j = 0; j < pixels.Length; j++)
+                {
+                    newPixels[i][j] = pixels[j][pixels.Length - i - 1];
+                }
+            }
+
+            return newPixels;
         }
 
         private static int GetRightEdgeIndex(TileAlignment alignment)
